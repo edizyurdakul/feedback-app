@@ -1,4 +1,17 @@
-import { Flex, Box, HStack, chakra } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Flex,
+  Box,
+  HStack,
+  chakra,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  Button,
+} from "@chakra-ui/react";
 import { StarIcon, EditIcon, CloseIcon } from "@chakra-ui/icons";
 
 const StarSwitch = (starRating) => {
@@ -59,6 +72,15 @@ const StarSwitch = (starRating) => {
 };
 
 function FeedbackItem({ item, handleDelete }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const onCancel = () => {
+    setIsOpen(false);
+  };
+  const onDelete = (id) => {
+    setIsOpen(false);
+    handleDelete(id);
+  };
+  const cancelRef = React.useRef();
   return (
     <Flex p={4} justifyContent="center">
       <Box
@@ -75,25 +97,42 @@ function FeedbackItem({ item, handleDelete }) {
           shadow: "lg",
         }}
       >
-        <Flex
-          alignItems="center"
-          alignContent="center"
-          justifyContent="space-between"
-          mt={2}
-        >
+        <Flex alignItems="center" alignContent="center" justifyContent="space-between" mt={2}>
           <HStack spacing={1} display="flex" alignItems="center">
             {StarSwitch(item.rating)}
           </HStack>
           <Box>
             <EditIcon css={{ cursor: "pointer" }} mr={6} color="purple.200" />
-            <CloseIcon
-              css={{ cursor: "pointer" }}
-              onClick={() => handleDelete(item.id)}
-              color="purple.200"
-            />
+            <CloseIcon css={{ cursor: "pointer" }} onClick={() => setIsOpen(true)} color="purple.200" />
           </Box>
         </Flex>
         <Box mt={2}>
+          <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onCancel}>
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader color="purple.500" fontSize="lg" fontWeight="bold">
+                  Delete Customer
+                </AlertDialogHeader>
+                <AlertDialogBody color="gray.900">Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button color="gray.900" ref={cancelRef} onClick={onCancel}>
+                    Cancel
+                  </Button>
+                  <Button
+                    colorScheme="purple"
+                    onClick={() => {
+                      onDelete(item.id);
+                    }}
+                    ml={3}
+                  >
+                    Delete
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
+
           <chakra.p mt={4}>{item.text}</chakra.p>
         </Box>
       </Box>
