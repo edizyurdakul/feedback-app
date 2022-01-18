@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HStack, Flex, Box, Textarea, Button, chakra } from "@chakra-ui/react";
 import RatingSelect from "./RatingSelect";
 
@@ -8,6 +8,10 @@ const FeedbackForm = ({ handleAdd }) => {
 
   const handleText = (e) => {
     setText(e.target.value);
+  };
+
+  const handleStar = (rating) => {
+    setStar(rating);
   };
 
   const handleSend = () => {
@@ -20,6 +24,10 @@ const FeedbackForm = ({ handleAdd }) => {
       setText("");
     }
   };
+  useEffect(() => {
+    setStar(star);
+  }, [star]);
+
   return (
     <Flex p={4} justifyContent="center">
       <Box
@@ -40,7 +48,7 @@ const FeedbackForm = ({ handleAdd }) => {
           <HStack spacing={1} display="flex" alignItems="center">
             <RatingSelect
               select={(rating) => {
-                setStar(rating);
+                handleStar(rating);
               }}
             />
           </HStack>

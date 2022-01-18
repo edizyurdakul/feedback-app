@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StarIcon } from "@chakra-ui/icons";
 const RatingSelect = ({ select }) => {
   const [selected, setSelected] = useState(1);
 
   const changeSelected = (rating) => {
     setSelected(rating);
-    select(selected);
   };
+
+  useEffect(() => {
+    select(selected);
+  }, [selected]);
 
   const selectedRating = (rating) => {
     switch (rating) {
