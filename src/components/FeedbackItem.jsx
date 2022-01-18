@@ -116,11 +116,12 @@ function FeedbackItem({ item, handleDelete }) {
                 <AlertDialogBody color="gray.900">Are you sure? You can't undo this action afterwards.</AlertDialogBody>
 
                 <AlertDialogFooter>
-                  <Button color="gray.900" ref={cancelRef} onClick={onCancel}>
+                  <Button _focus={{ boxShadow: "0 0 0 3px #D6BCFA" }} color="gray.900" ref={cancelRef} onClick={onCancel}>
                     Cancel
                   </Button>
                   <Button
                     colorScheme="purple"
+                    _focus={{ boxShadow: "0 0 0 3px #E9D8FD" }}
                     onClick={() => {
                       onDelete(item.id);
                     }}
