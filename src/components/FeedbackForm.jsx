@@ -1,79 +1,24 @@
 import { useState } from "react";
-import { HStack, Flex, Box, Textarea, Tooltip, Button, chakra } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
+import { HStack, Flex, Box, Textarea, Button, chakra } from "@chakra-ui/react";
+import RatingSelect from "./RatingSelect";
 
-const FeedbackForm = () => {
+const FeedbackForm = ({ handleAdd }) => {
   const [star, setStar] = useState(1);
   const [text, setText] = useState("");
 
-  const selectStar = () => {
-    switch (star) {
-      case 1:
-        return (
-          <>
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(1)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(2)} color="gray.500" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(3)} color="gray.500" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(4)} color="gray.500" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(5)} color="gray.500" />
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(1)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(2)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(3)} color="gray.500" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(4)} color="gray.500" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(5)} color="gray.500" />
-          </>
-        );
-      case 3:
-        return (
-          <>
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(1)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(2)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(3)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(4)} color="gray.500" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(5)} color="gray.500" />
-          </>
-        );
-      case 4:
-        return (
-          <>
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(1)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(2)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(3)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(2)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(5)} color="gray.500" />
-          </>
-        );
-      case 5:
-        return (
-          <>
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(1)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(2)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(3)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(4)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(5)} color="purple.200" />
-          </>
-        );
-
-      default:
-        return (
-          <>
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(1)} color="purple.200" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(2)} color="gray.500" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(3)} color="gray.500" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(4)} color="gray.500" />
-            <StarIcon css={{ cursor: "pointer" }} onClick={() => setStar(5)} color="gray.500" />
-          </>
-        );
-    }
-  };
-
   const handleText = (e) => {
     setText(e.target.value);
+  };
+
+  const handleSend = () => {
+    if (text.trim().length > 10) {
+      const newFeedback = {
+        text: text,
+        rating: star,
+      };
+      handleAdd(newFeedback);
+      setText("");
+    }
   };
   return (
     <Flex p={4} justifyContent="center">
@@ -93,7 +38,11 @@ const FeedbackForm = () => {
       >
         <Flex alignItems="center" alignContent="center" justifyContent="space-between" mt={2}>
           <HStack spacing={1} display="flex" alignItems="center">
-            {selectStar(star)}
+            <RatingSelect
+              select={(rating) => {
+                setStar(rating);
+              }}
+            />
           </HStack>
           <Box></Box>
         </Flex>
@@ -126,7 +75,7 @@ const FeedbackForm = () => {
             </>
           ) : (
             text.trim().length >= 10 && (
-              <Button colorScheme="purple" mt={6}>
+              <Button onClick={handleSend} colorScheme="purple" mt={6}>
                 Send
               </Button>
             )
