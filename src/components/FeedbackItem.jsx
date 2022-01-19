@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import RatingSelect from "./RatingSelect";
 import FeedbackContext from "../context/FeedbackContext";
 import {
   Flex,
@@ -12,6 +13,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Button,
+  Textarea,
 } from "@chakra-ui/react";
 import { StarIcon, EditIcon, CloseIcon } from "@chakra-ui/icons";
 
@@ -72,17 +74,22 @@ const StarSwitch = (starRating) => {
   }
 };
 
-function FeedbackItem({ item, handleDelete }) {
-  const { deleteFeedback } = useContext(FeedbackContext);
-  const [isOpen, setIsOpen] = useState(false);
-  const onCancel = () => {
-    setIsOpen(false);
+function FeedbackItem({ item }) {
+  const { deleteFeedback, editFeedback } = useContext(FeedbackContext);
+
+  // Delete
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const cancelDeleteRef = React.useRef();
+
+  const onDeleteCancel = () => {
+    setDeleteOpen(false);
   };
+
   const onDelete = (id) => {
-    setIsOpen(false);
+    setDeleteOpen(false);
     deleteFeedback(id);
   };
-  const cancelRef = React.useRef();
+
   return (
     <Flex p={4} justifyContent="center">
       <Box
@@ -109,19 +116,24 @@ function FeedbackItem({ item, handleDelete }) {
             {StarSwitch(item.rating)}
           </HStack>
           <Box>
-            <EditIcon css={{ cursor: "pointer" }} mr={6} color="purple.200" />
+            <EditIcon
+              css={{ cursor: "pointer" }}
+              mr={6}
+              onClick={() => editFeedback(item)}
+              color="purple.200"
+            />
             <CloseIcon
               css={{ cursor: "pointer" }}
-              onClick={() => setIsOpen(true)}
+              onClick={() => setDeleteOpen(true)}
               color="purple.200"
             />
           </Box>
         </Flex>
         <Box mt={2}>
           <AlertDialog
-            isOpen={isOpen}
-            leastDestructiveRef={cancelRef}
-            onClose={onCancel}
+            isOpen={deleteOpen}
+            leastDestructiveRef={cancelDeleteRef}
+            onClose={onDeleteCancel}
           >
             <AlertDialogOverlay>
               <AlertDialogContent>
@@ -130,18 +142,17 @@ function FeedbackItem({ item, handleDelete }) {
                   fontSize="lg"
                   fontWeight="bold"
                 >
-                  Delete Customer
+                  Delete Review
                 </AlertDialogHeader>
                 <AlertDialogBody color="gray.900">
                   Are you sure? You can't undo this action afterwards.
                 </AlertDialogBody>
-
                 <AlertDialogFooter>
                   <Button
                     _focus={{ boxShadow: "0 0 0 3px #D6BCFA" }}
                     color="gray.900"
-                    ref={cancelRef}
-                    onClick={onCancel}
+                    ref={cancelDeleteRef}
+                    onClick={onDeleteCancel}
                   >
                     Cancel
                   </Button>
