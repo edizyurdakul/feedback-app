@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import FeedbackContext from "../context/FeedbackContext";
 import { HStack, Flex, Box, Textarea, Button, chakra } from "@chakra-ui/react";
 import RatingSelect from "./RatingSelect";
 
-const FeedbackForm = ({ handleAdd }) => {
+const FeedbackForm = () => {
   const [star, setStar] = useState(1);
   const [text, setText] = useState("");
+
+  const { addFeedback } = useContext(FeedbackContext);
 
   const handleText = (e) => {
     setText(e.target.value);
@@ -20,7 +23,7 @@ const FeedbackForm = ({ handleAdd }) => {
         text: text,
         rating: star,
       };
-      handleAdd(newFeedback);
+      addFeedback(newFeedback);
       setText("");
     }
   };
@@ -44,7 +47,12 @@ const FeedbackForm = ({ handleAdd }) => {
           shadow: "lg",
         }}
       >
-        <Flex alignItems="center" alignContent="center" justifyContent="space-between" mt={2}>
+        <Flex
+          alignItems="center"
+          alignContent="center"
+          justifyContent="space-between"
+          mt={2}
+        >
           <HStack spacing={1} display="flex" alignItems="center">
             <RatingSelect
               select={(rating) => {

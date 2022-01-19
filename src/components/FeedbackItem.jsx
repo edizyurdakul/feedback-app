@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import FeedbackContext from "../context/FeedbackContext";
 import {
   Flex,
   Box,
@@ -72,13 +73,14 @@ const StarSwitch = (starRating) => {
 };
 
 function FeedbackItem({ item, handleDelete }) {
+  const { deleteFeedback } = useContext(FeedbackContext);
   const [isOpen, setIsOpen] = useState(false);
   const onCancel = () => {
     setIsOpen(false);
   };
   const onDelete = (id) => {
     setIsOpen(false);
-    handleDelete(id);
+    deleteFeedback(id);
   };
   const cancelRef = React.useRef();
   return (
@@ -97,26 +99,50 @@ function FeedbackItem({ item, handleDelete }) {
           shadow: "lg",
         }}
       >
-        <Flex alignItems="center" alignContent="center" justifyContent="space-between" mt={2}>
+        <Flex
+          alignItems="center"
+          alignContent="center"
+          justifyContent="space-between"
+          mt={2}
+        >
           <HStack spacing={1} display="flex" alignItems="center">
             {StarSwitch(item.rating)}
           </HStack>
           <Box>
             <EditIcon css={{ cursor: "pointer" }} mr={6} color="purple.200" />
-            <CloseIcon css={{ cursor: "pointer" }} onClick={() => setIsOpen(true)} color="purple.200" />
+            <CloseIcon
+              css={{ cursor: "pointer" }}
+              onClick={() => setIsOpen(true)}
+              color="purple.200"
+            />
           </Box>
         </Flex>
         <Box mt={2}>
-          <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onCancel}>
+          <AlertDialog
+            isOpen={isOpen}
+            leastDestructiveRef={cancelRef}
+            onClose={onCancel}
+          >
             <AlertDialogOverlay>
               <AlertDialogContent>
-                <AlertDialogHeader color="purple.500" fontSize="lg" fontWeight="bold">
+                <AlertDialogHeader
+                  color="purple.500"
+                  fontSize="lg"
+                  fontWeight="bold"
+                >
                   Delete Customer
                 </AlertDialogHeader>
-                <AlertDialogBody color="gray.900">Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+                <AlertDialogBody color="gray.900">
+                  Are you sure? You can't undo this action afterwards.
+                </AlertDialogBody>
 
                 <AlertDialogFooter>
-                  <Button _focus={{ boxShadow: "0 0 0 3px #D6BCFA" }} color="gray.900" ref={cancelRef} onClick={onCancel}>
+                  <Button
+                    _focus={{ boxShadow: "0 0 0 3px #D6BCFA" }}
+                    color="gray.900"
+                    ref={cancelRef}
+                    onClick={onCancel}
+                  >
                     Cancel
                   </Button>
                   <Button

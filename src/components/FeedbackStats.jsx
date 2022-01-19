@@ -1,7 +1,10 @@
-import PropTypes from "prop-types";
+import { useContext } from "react";
+import FeedbackContext from "../context/FeedbackContext";
 import { Flex, Box, chakra } from "@chakra-ui/react";
 
-const FeedbackStats = ({ feedback }) => {
+const FeedbackStats = () => {
+  const { feedback } = useContext(FeedbackContext);
+
   // Average Rating
   let average =
     feedback.reduce((acc, cur) => {
@@ -39,16 +42,14 @@ const FeedbackStats = ({ feedback }) => {
             <chakra.h2>{feedback.length} Reviews</chakra.h2>
           </Box>
           <Box>
-            <chakra.h2>Average Rating: {isNaN(average) ? 0 : average}</chakra.h2>
+            <chakra.h2>
+              Average Rating: {isNaN(average) ? 0 : average}
+            </chakra.h2>
           </Box>
         </Flex>
       </Box>
     </Flex>
   );
-};
-
-FeedbackStats.propTypes = {
-  feedback: PropTypes.array.isRequired,
 };
 
 export default FeedbackStats;
