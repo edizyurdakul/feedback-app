@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import RatingSelect from "./RatingSelect";
 import FeedbackContext from "../context/FeedbackContext";
 import {
   Flex,
@@ -13,7 +12,6 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Button,
-  Textarea,
 } from "@chakra-ui/react";
 import { StarIcon, EditIcon, CloseIcon } from "@chakra-ui/icons";
 

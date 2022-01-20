@@ -15,7 +15,6 @@ import {
   chakra,
 } from "@chakra-ui/react";
 import RatingSelect from "./RatingSelect";
-import EditRatingSelect from "./RatingSelect";
 
 const FeedbackForm = () => {
   const [star, setStar] = useState(1);

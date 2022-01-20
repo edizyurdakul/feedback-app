@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from "react";
-import FeedbackContext from "../context/FeedbackContext";
+import { useState, useEffect } from "react";
+// import FeedbackContext from "../context/FeedbackContext";
 import { StarIcon } from "@chakra-ui/icons";
 const RatingSelect = ({ select }) => {
   const [selected, setSelected] = useState(1);
@@ -10,7 +10,7 @@ const RatingSelect = ({ select }) => {
 
   useEffect(() => {
     select(selected);
-  }, [selected]);
+  }, [selected, select]);
 
   const selectedRating = (rating) => {
     switch (rating) {
