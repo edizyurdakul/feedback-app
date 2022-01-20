@@ -15,11 +15,16 @@ import {
   chakra,
 } from "@chakra-ui/react";
 import RatingSelect from "./RatingSelect";
+import EditRatingSelect from "./RatingSelect";
 
 const FeedbackForm = () => {
   const [star, setStar] = useState(1);
   const [text, setText] = useState("");
-
+  // Edit
+  const [editRating, setEditRating] = useState(1);
+  const [editReview, setEditReview] = useState("");
+  const [editOpen, setEditOpen] = useState(false);
+  const cancelEditRef = React.useRef();
   const { addFeedback, feedbackEdit } = useContext(FeedbackContext);
 
   const handleText = (e) => {
@@ -42,17 +47,18 @@ const FeedbackForm = () => {
   };
   useEffect(() => {
     setStar(star);
+    console.log(star);
   }, [star]);
 
-  // Edit
-  const [editRating, setEditRating] = useState(1);
-  const [editReview, setEditReview] = useState("");
-  const [editOpen, setEditOpen] = useState(false);
-  const cancelEditRef = React.useRef();
+  useEffect(() => {
+    handleStar(editRating);
+  }, [editRating]);
 
+  // Edit
   const onEditCancel = () => {
     setEditOpen(false);
     setEditReview("");
+    setEditRating(1);
   };
 
   const handleEditRating = (rating) => {
@@ -70,10 +76,6 @@ const FeedbackForm = () => {
       // run modal
     }
   }, [feedbackEdit]);
-
-  useEffect(() => {
-    console.log(editRating, editReview);
-  }, [editRating, editReview]);
 
   return (
     <Flex p={4} justifyContent="center">
@@ -157,8 +159,8 @@ const FeedbackForm = () => {
         >
           <HStack spacing={1} display="flex" alignItems="center">
             <RatingSelect
-              select={(rating) => {
-                handleStar(rating);
+              select={(star) => {
+                handleStar(star);
               }}
             />
           </HStack>
