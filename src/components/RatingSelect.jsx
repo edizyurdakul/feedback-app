@@ -12,8 +12,10 @@ const RatingSelect = ({ select }) => {
   useEffect(() => {
     select(selected);
   }, [selected]);
+
   useEffect(() => {
-    select(feedbackEdit.item.rating);
+    setSelected(feedbackEdit.item.rating);
+    console.log("Feedback", feedbackEdit.item.rating);
   }, [feedbackEdit]);
 
   const selectedRating = (rating) => {
