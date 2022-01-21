@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
-// import FeedbackContext from "../context/FeedbackContext";
+import { useState, useEffect, useContext } from "react";
+import FeedbackContext from "../context/FeedbackContext";
 import { StarIcon } from "@chakra-ui/icons";
 const RatingSelect = ({ select }) => {
   const [selected, setSelected] = useState(1);
+  const { addFeedback, feedbackEdit } = useContext(FeedbackContext);
 
   const changeSelected = (rating) => {
     setSelected(rating);
@@ -11,6 +12,20 @@ const RatingSelect = ({ select }) => {
   useEffect(() => {
     select(selected);
   }, [selected, select]);
+
+  // Grab star rating from feedbackEdit as updates
+  useEffect(() => {
+    if (feedbackEdit.edit === true) {
+      setSelected(feedbackEdit.item.rating);
+    }
+  }, [feedbackEdit]);
+
+  // Reset form rating after sending review
+  useEffect(() => {
+    if (feedbackEdit.edit === false) {
+      setSelected(1);
+    }
+  }, [addFeedback, feedbackEdit.edit]);
 
   const selectedRating = (rating) => {
     switch (rating) {

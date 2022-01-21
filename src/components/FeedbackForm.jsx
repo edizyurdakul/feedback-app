@@ -24,7 +24,8 @@ const FeedbackForm = () => {
   const [editReview, setEditReview] = useState("");
   const [editOpen, setEditOpen] = useState(false);
   const cancelEditRef = React.useRef();
-  const { addFeedback, feedbackEdit } = useContext(FeedbackContext);
+  const { addFeedback, feedbackEdit, editReset, updateFeedback } =
+    useContext(FeedbackContext);
 
   const handleText = (e) => {
     setText(e.target.value);
@@ -44,20 +45,18 @@ const FeedbackForm = () => {
       setText("");
     }
   };
-  useEffect(() => {
-    setStar(star);
-    console.log(star);
-  }, [star]);
 
   useEffect(() => {
-    handleStar(editRating);
-  }, [editRating]);
+    setStar(star);
+  }, [star]);
 
   // Edit
   const onEditCancel = () => {
+    editReset(true);
     setEditOpen(false);
     setEditReview("");
     setEditRating(1);
+    setStar(1);
   };
 
   const handleEditRating = (rating) => {
@@ -67,6 +66,7 @@ const FeedbackForm = () => {
   const handleEditText = (e) => {
     setEditReview(e.target.value);
   };
+
   useEffect(() => {
     if (feedbackEdit.edit === true) {
       setEditOpen(true);
@@ -75,6 +75,17 @@ const FeedbackForm = () => {
       // run modal
     }
   }, [feedbackEdit]);
+
+  const handleEditSend = () => {
+    if (feedbackEdit.edit === true) {
+      const updatedFeedbackItem = {
+        text: editReview,
+        rating: editRating,
+      };
+      updateFeedback(feedbackEdit.item.id, updatedFeedbackItem);
+      onEditCancel();
+    }
+  };
 
   return (
     <Flex p={4} justifyContent="center">
@@ -111,6 +122,7 @@ const FeedbackForm = () => {
                   select={(rating) => {
                     handleEditRating(rating);
                   }}
+                  editRating={editRating}
                 />
                 <Textarea
                   placeholder="Enter your review here"
@@ -140,9 +152,9 @@ const FeedbackForm = () => {
                 <Button
                   colorScheme="purple"
                   _focus={{ boxShadow: "0 0 0 3px #E9D8FD" }}
-                  onClick={() => {}}
                   size="md"
                   ml={3}
+                  onClick={handleEditSend}
                 >
                   Save
                 </Button>
@@ -163,7 +175,6 @@ const FeedbackForm = () => {
               }}
             />
           </HStack>
-          <Box></Box>
         </Flex>
         <Box mt={2}>
           <chakra.p mt={4}>How would you rate our service with us</chakra.p>
