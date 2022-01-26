@@ -2,9 +2,28 @@ import { useContext } from "react";
 import FeedbackContext from "../context/FeedbackContext";
 import FeedbackItem from "./FeedbackItem";
 import { motion, AnimatePresence } from "framer-motion";
+import { Flex, Box, Spinner } from "@chakra-ui/react";
 
 const FeedbackList = () => {
-  const { feedback } = useContext(FeedbackContext);
+  const { feedback, loading } = useContext(FeedbackContext);
+
+  if (loading) {
+    return (
+      <Flex p={4} justifyContent="center">
+        <Box
+          width="xl"
+          px={8}
+          py={4}
+          rounded="lg"
+          maxW="xl"
+          display="flex"
+          justifyContent="center"
+        >
+          <Spinner />
+        </Box>
+      </Flex>
+    );
+  }
 
   return (
     <div>
