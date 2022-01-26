@@ -19,7 +19,7 @@ const FeedbackList = () => {
           display="flex"
           justifyContent="center"
         >
-          <Spinner />
+          <Spinner color="purple.600" />
         </Box>
       </Flex>
     );
