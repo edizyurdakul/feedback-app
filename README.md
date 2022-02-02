@@ -10,7 +10,7 @@ My goal was to learn more about managing global state, event, and prop drilling.
 
 ## Why I built the project this way
 
-- I didn't use a state management library like Redux on purpose. For this app using react context API is sufficient. I realized that more and more projects don't use Redux anymore since react context API are often used for global state management.
+- I didn't use a state management library like Redux on purpose. For this app using react context API is sufficient.
 - Main focus of the project was to build strictly frontend. That's why I decided to use an JSON-Server as a fake API endpoint rather to create a backend server.
 
 ## If I had more time I would change this
